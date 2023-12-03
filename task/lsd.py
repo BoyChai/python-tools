@@ -36,7 +36,7 @@ class ImageProcessorApp:
     def __init__(self, root):
         self.root = root
         self.root.title("图像处理器")
-        self.root.geometry("1000x680")  # 设置窗口大小
+        self.root.geometry("1200x680")  # 设置窗口大小
 
         self.img_path1 = ""
         self.img_path2 = ""
@@ -46,32 +46,32 @@ class ImageProcessorApp:
 
     def create_widgets(self):
         # 左侧布局
-        left_frame = tk.Frame(self.root)
+        left_frame = tk.Frame(self.root, bd=2, relief="solid")
         left_frame.pack(side=tk.LEFT, padx=10, pady=10)
 
         tk.Label(left_frame, text="选择图像 1:").pack()
         tk.Button(left_frame, text="浏览", command=self.browse_image1).pack()
 
-        self.image_frame1 = tk.Frame(left_frame, width=400, height=300)
+        self.image_frame1 = tk.Frame(left_frame, width=400, height=300, bd=2, relief="solid")
         self.image_frame1.pack()
 
         tk.Label(left_frame, text="选择图像 2:").pack()
         tk.Button(left_frame, text="浏览", command=self.browse_image2).pack()
 
-        self.image_frame2 = tk.Frame(left_frame, width=400, height=300)
+        self.image_frame2 = tk.Frame(left_frame, width=400, height=300, bd=2, relief="solid")
         self.image_frame2.pack()
 
         # 右侧布局
-        right_frame = tk.Frame(self.root)
+        right_frame = tk.Frame(self.root, bd=2, relief="solid")
         right_frame.pack(side=tk.RIGHT, padx=10, pady=10)
 
         self.process_button = tk.Button(right_frame, text="处理图像", command=self.process_images)
-        self.process_button.pack()
+        self.process_button.pack(side=tk.TOP)  # Adjust the button position
 
         self.save_button = tk.Button(right_frame, text="保存结果", command=self.save_result, state=tk.DISABLED)
-        self.save_button.pack()
+        self.save_button.pack(side=tk.TOP)  # Adjust the button position
 
-        self.result_label = tk.Label(right_frame, width=800, height=600)
+        self.result_label = tk.Label(right_frame, width=800, height=600, bd=2, relief="solid")
         self.result_label.pack()
 
     def browse_image1(self):
@@ -100,13 +100,16 @@ class ImageProcessorApp:
         img = Image.fromarray(img)
         img = ImageTk.PhotoImage(img)
 
-        # 清空frame
+        # Clear the frame
         for widget in frame.winfo_children():
             widget.destroy()
 
-        label = tk.Label(frame, image=img)
+        label = tk.Label(frame, image=img, bd=2, relief="solid")
         label.image = img
-        label.pack()
+        label.pack(side=tk.TOP, fill=tk.BOTH, expand=tk.YES)
+
+        # Disable frame propagation to prevent it from changing its size
+        frame.pack_propagate(False)
 
     def save_result(self):
         if self.result_img is not None:
